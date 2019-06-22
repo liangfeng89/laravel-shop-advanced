@@ -7,7 +7,7 @@ Route::get('alipay', function() {
         'total_amount' => '1',
         'subject' => 'test subject - 测试',
     ]);
-};
+});
 
 Route::redirect('/', '/products')->name('root');
 Route::get('products', 'ProductsController@index')->name('products.index');
