@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\OrderItem;
 use App\Models\Category;
+// use App\Services\CategoryService;
 
 class ProductsController extends Controller
 {
@@ -66,7 +67,9 @@ class ProductsController extends Controller
                 'order'  => $order,
             ],
             // 等价于 isset($category) ? $category : null     当前类目
-            'category' => $category ?? null,            
+            'category' => $category ?? null,
+            // 将类目树传递给模板文件
+            // 'categoryTree' => $categoryService->getCategoryTree(),           
         ]);
     }
 
