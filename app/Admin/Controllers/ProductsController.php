@@ -64,6 +64,8 @@ class ProductsController extends Controller
     protected function grid()
     {
         return Admin::grid(Product::class, function (Grid $grid) {
+            // 显示商通商品
+            $grid->model()->where('type', Product::TYPE_NORMAL)->with(['category']);
             // 使用 with 来预加载商品类目数据，减少 SQL 查询
             $grid->model()->with(['category']);
             // Laravel-Admin 支持用符号 . 来展示关联关系的字段
@@ -127,6 +129,8 @@ class ProductsController extends Controller
                 $form->text('stock', '剩余库存')->rules('required|integer|min:0');
             });
 
+            // 在表单中添加一个名为 type，值为 Product::TYPE_NORMAL 的隐藏字段 普通商品
+            $form->hidden('type')->value(Product::TYPE_NORMAL);
 
             // 定义事件回调，当模型即将保存时会触发这个回调
             $form->saving(function (Form $form) {
