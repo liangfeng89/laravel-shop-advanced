@@ -3,33 +3,18 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Product;
-use App\Http\Controllers\Controller;
-use Encore\Admin\Controllers\HasResourceActions;
+use App\Models\CrowdfundingProduct;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
-use Encore\Admin\Layout\Content;
-use Encore\Admin\Show;
 
-use App\Models\Category;
-use App\Models\CrowdfundingProduct;
-
-class CrowdfundingProductsController extends Controller
+class CrowdfundingProductsController extends CommonProductsController
 {
-    use HasResourceActions;
-
-    /**
-     * Index interface.
-     *
-     * @param Content $content
-     * @return Content
-     */
-    public function index(Content $content)
+    // 移除 HasResourceActions
+    public function getProductType()
     {
-        return $content
-            ->header('众筹商品列表')
-            ->description('description')
-            ->body($this->grid());
+        return Product::TYPE_CROWDFUNDING;
     }
+    // 移除 `index()` / `create()` / `edit()` 这三个方法
 
     /**
      * Show interface.
@@ -47,59 +32,12 @@ class CrowdfundingProductsController extends Controller
     }
 
     /**
-     * Edit interface.
-     *
-     * @param mixed $id
-     * @param Content $content
-     * @return Content
-     */
-    public function edit($id, Content $content)
-    {
-        return $content
-            ->header('编辑众筹商品')
-            ->description('description')
-            ->body($this->form()->edit($id));
-    }
-
-    /**
-     * Create interface.
-     *
-     * @param Content $content
-     * @return Content
-     */
-    public function create(Content $content)
-    {
-        return $content
-            ->header('创建众筹商品')
-            ->description('description')
-            ->body($this->form());
-    }
-
-    /**
      * Make a grid builder.
      *
      * @return Grid
      */
-    protected function grid()
+/*    protected function grid()
     {
-/*        $grid = new Grid(new Product);
-
-        $grid->id('Id');
-        $grid->type('Type');
-        $grid->category_id('Category id');
-        $grid->title('Title');
-        $grid->description('Description');
-        $grid->image('Image');
-        $grid->on_sale('On sale');
-        $grid->rating('Rating');
-        $grid->sold_count('Sold count');
-        $grid->review_count('Review count');
-        $grid->price('Price');
-        $grid->created_at('Created at');
-        $grid->updated_at('Updated at');
-
-        return $grid;*/
-
         $grid = new Grid(new Product);
 
         // 只展示 type 为众筹类型的商品   $grid->model() 源数据
@@ -130,6 +68,23 @@ class CrowdfundingProductsController extends Controller
 
         return $grid;        
     }
+*/
+    protected function customGrid(Grid $grid)
+    {
+        $grid->id('ID')->sortable();
+        $grid->title('商品名称');
+        $grid->on_sale('已上架')->display(function ($value) {
+            return $value ? '是' : '否';
+        });
+        $grid->price('价格');
+        $grid->column('crowdfunding.target_amount', '目标金额');
+        $grid->column('crowdfunding.end_at', '结束时间');
+        $grid->column('crowdfunding.total_amount', '目前金额');
+        $grid->column('crowdfunding.status', ' 状态')->display(function ($value) {
+            return CrowdfundingProduct::$statusMap[$value];
+        });
+    }
+
 
     /**
      * Make a show builder.
@@ -163,22 +118,9 @@ class CrowdfundingProductsController extends Controller
      *
      * @return Form
      */
+/*    
     protected function form()
     {
-/*        $form = new Form(new Product);
-
-        $form->text('type', 'Type')->default('normal');
-        $form->number('category_id', 'Category id');
-        $form->text('title', 'Title');
-        $form->textarea('description', 'Description');
-        $form->image('image', 'Image');
-        $form->switch('on_sale', 'On sale')->default(1);
-        $form->decimal('rating', 'Rating')->default(5.00);
-        $form->number('sold_count', 'Sold count');
-        $form->number('review_count', 'Review count');
-        $form->decimal('price', 'Price');
-
-        return $form;*/
         $form = new Form(new Product);
 
         // 在表单中添加一个名为 type，值为 Product::TYPE_CROWDFUNDING 的隐藏字段
@@ -207,5 +149,12 @@ class CrowdfundingProductsController extends Controller
         });
 
         return $form;        
-    }
+    }*/
+
+    protected function customForm(Form $form)
+    {
+        // 众筹相关字段
+        $form->text('crowdfunding.target_amount', '众筹目标金额')->rules('required|numeric|min:0.01');
+        $form->datetime('crowdfunding.end_at', '众筹结束时间')->rules('required|date');
+    }    
 }
