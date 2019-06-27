@@ -45,7 +45,8 @@ Route::group(['middleware' => 'auth'], function() {
         // 众筹下单
         Route::post('crowdfunding_orders', 'OrdersController@crowdfunding')->name('crowdfunding_orders.store');
         // 分期付款 
-        Route::post('payment/{order}/installment', 'PaymentController@payByInstallment')->name('payment.installment');               
+        Route::post('payment/{order}/installment', 'PaymentController@payByInstallment')->name('payment.installment');
+        Route::get('installments', 'InstallmentsController@index')->name('installments.index');               
     });
 });
 
