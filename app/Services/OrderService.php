@@ -12,6 +12,7 @@ use App\Exceptions\InvalidRequestException;
 use App\Jobs\CloseOrder;
 use Carbon\Carbon;
 use App\Exceptions\InternalException;
+use App\Jobs\RefundInstallmentOrder;
 
 class OrderService
 {
@@ -138,6 +139,15 @@ class OrderService
     {
         // 判断该订单的支付方式
         switch ($order->payment_method) {
+            // 分期退款
+            case 'installment':
+                $order->update([
+                    'refund_no' => Order::getAvailableRefundNo(), // 生成退款订单号
+                    'refund_status' => Order::REFUND_STATUS_PROCESSING, // 将退款状态改为退款中
+                ]);
+                // 触发退款异步任务
+                dispatch(new RefundInstallmentOrder($order));
+                break;            
             case 'wechat':
                 // 生成退款订单号
                 $refundNo = Order::getAvailableRefundNo();
