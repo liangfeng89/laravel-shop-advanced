@@ -50,7 +50,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('installments/{installment}', 'InstallmentsController@show')->name('installments.show');
         Route::get('installments/{installment}/alipay', 'InstallmentsController@payByAlipay')->name('installments.alipay');
         // 分期付款回调前端
-        Route::get('installments/alipay/return', 'InstallmentsController@alipayReturn')->name('installments.alipay.return');                             
+        Route::get('installments/alipay/return', 'InstallmentsController@alipayReturn')->name('installments.alipay.return');  
+        // 拉起微信支付
+        Route::get('installments/{installment}/wechat', 'InstallmentsController@payByWechat')->name('installments.wechat');                                   
     });
 });
 
@@ -58,7 +60,7 @@ Route::get('products/{product}', 'ProductsController@show')->name('products.show
 Route::post('payment/alipay/notify', 'PaymentController@alipayNotify')->name('payment.alipay.notify');
 Route::post('payment/wechat/notify', 'PaymentController@wechatNotify')->name('payment.wechat.notify');
 Route::post('payment/wechat/refund_notify', 'PaymentController@wechatRefundNotify')->name('payment.wechat.refund_notify');
-// 分期付款回调后端
+// 分期付款回调后端 
 Route::post('installments/alipay/notify', 'InstallmentsController@alipayNotify')->name('installments.alipay.notify');
-
+Route::post('installments/wechat/notify', 'InstallmentsController@wechatNotify')->name('installments.wechat.notify');
 
