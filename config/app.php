@@ -230,6 +230,7 @@ return [
     ],
 
     'order_ttl' => 1800,
+    'seckill_order_ttl' => 600,
     'ngrok_url' => env('NGROK_URL'),
     'installment_fee_rate' => [
         3  => 1.5, 
@@ -237,5 +238,5 @@ return [
         12 => 2.5,
     ], // 分期费率，key 为期数，value 为费率
     'min_installment_amount' => 300, // 最低分期金额
-    'installment_fine_rate' => 0.05, // 逾期日息 0.05%    
+    'installment_fine_rate' => 0.05, // 逾期日息 0.05% 
 ];

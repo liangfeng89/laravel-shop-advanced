@@ -52,7 +52,9 @@ Route::group(['middleware' => 'auth'], function() {
         // 分期付款回调前端
         Route::get('installments/alipay/return', 'InstallmentsController@alipayReturn')->name('installments.alipay.return');  
         // 拉起微信支付
-        Route::get('installments/{installment}/wechat', 'InstallmentsController@payByWechat')->name('installments.wechat');                                   
+        Route::get('installments/{installment}/wechat', 'InstallmentsController@payByWechat')->name('installments.wechat'); 
+        
+        Route::post('seckill_orders', 'OrdersController@seckill')->name('seckill_orders.store');                                  
     });
 });
 
