@@ -1,6 +1,6 @@
 <?php
 
-
+Route::post('seckill_orders', 'OrdersController@seckill')->name('seckill_orders.store');
 /*Route::get('alipay', function() {
     return app('alipay')->web([
         'out_trade_no' => time(),
@@ -54,7 +54,7 @@ Route::group(['middleware' => 'auth'], function() {
         // 拉起微信支付
         Route::get('installments/{installment}/wechat', 'InstallmentsController@payByWechat')->name('installments.wechat'); 
         
-        Route::post('seckill_orders', 'OrdersController@seckill')->name('seckill_orders.store');                                  
+        // Route::post('seckill_orders', 'OrdersController@seckill')->name('seckill_orders.store');                                  
     });
 });
 
