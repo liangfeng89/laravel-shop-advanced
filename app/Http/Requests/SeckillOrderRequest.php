@@ -27,7 +27,6 @@ class SeckillOrderRequest extends Request
             'address.contact_phone' => 'required',
 
 
-
 /*            'sku_id'     => [
                 'required',
                 function ($attribute, $value, $fail) {
