@@ -1,14 +1,6 @@
 <?php
 
-Route::post('seckill_orders', 'OrdersController@seckill')->name('seckill_orders.store')->middleware('random_drop:100');;
-/*Route::get('alipay', function() {
-    return app('alipay')->web([
-        'out_trade_no' => time(),
-        'total_amount' => '1',
-        'subject' => 'test subject - 测试',
-    ]);
-});*/
-
+Route::post('seckill_orders', 'OrdersController@seckill')->name('seckill_orders.store')->middleware('random_drop:100');
 Route::redirect('/', '/products')->name('root');
 Route::get('products', 'ProductsController@index')->name('products.index');
 
